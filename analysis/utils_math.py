@@ -3,7 +3,7 @@
 from pathlib import Path
 import pandas as pd
 import numpy as np
-import scipy.io
+from scipy.io import loadmat
 from typing import Union, Optional
 
 
@@ -45,7 +45,7 @@ def function_sem(arr: np.array, is_array: bool = False) -> Union[int, np.array]:
 
 def from_matlab_file_to_dict(filename: Path) -> dict:
     """ takes a filename path and returns a numpy workable dictionary containing the variables """
-    mat = scipy.io.loadmat(str(filename))
+    mat = loadmat(str(filename))
     clean_dict = from_mat_dict(mat)
     return clean_dict
 
@@ -59,7 +59,7 @@ def from_mat_dict(mat: dict, keys: Optional[str] = None) -> dict:
         print(key)
         if type(mat[key]) == np.ndarray:
             if len(mat[key]) > 0:
-                key_variables = mat[key][0][0].dtype.names
+                key_variables = mat[key].dtype.names
                 if key_variables is None:
                     if mat[key].dtype == np.dtype('O'):
                         out_dict[key] = np.squeeze(mat[key][0][0])
@@ -71,7 +71,7 @@ def from_mat_dict(mat: dict, keys: Optional[str] = None) -> dict:
                     else:
                         out_dict[key] = _mat_with_labels(key_variables, mat[key])
                 else:
-                    out_dict[key] = from_mat_dict(mat[key], key_variables)
+                    out_dict[key] = from_mat_dict(mat[key][0][0], key_variables)
             else:
                 out_dict[key] = mat[key]
 
