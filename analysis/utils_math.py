@@ -74,7 +74,6 @@ def from_mat_dict(mat: dict, keys: Optional[str] = None) -> dict:
                     out_dict[key] = from_mat_dict(mat[key][0][0], key_variables)
             else:
                 out_dict[key] = mat[key]
-
     return out_dict
 
 

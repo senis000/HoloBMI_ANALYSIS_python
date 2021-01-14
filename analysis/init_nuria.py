@@ -19,3 +19,5 @@ import matplotlib.pyplot as plt
 from matplotlib import interactive
 from typing import Dict, Tuple, Optional, List
 import warnings
+
+interactive(True)
