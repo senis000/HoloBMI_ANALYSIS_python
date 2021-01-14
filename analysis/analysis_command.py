@@ -7,7 +7,7 @@ from analysis.analysis_constants import learning_directory
 
 
 def create_dirs():
-    # Directories
+    """ function to create the directories to store data or plots """
 
     if not AnalysisConfiguration.local_dir.exists():
         AnalysisConfiguration.local_dir.mkdir()
