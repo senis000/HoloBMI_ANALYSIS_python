@@ -1,13 +1,7 @@
 # class where to store/retrieve all the analysis results
 
-import os
-import h5py
-import pickle
-import numpy as np
 import pandas as pd
-from dataclasses import dataclass
-from pathlib import Path
-from typing import Optional, Callable
+from utils.general_constants import *
 from analysis.analysis_constants import *
 
 

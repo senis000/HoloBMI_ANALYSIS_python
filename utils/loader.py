@@ -1,27 +1,13 @@
 # to load all results of one session
 
-import datetime
-import json
-import logging
-import os
-import pickle
-import pathlib
-import posixpath
-import re
-import tempfile
-from functools import lru_cache
-from typing import Dict, Tuple, Optional, List
-
-import numpy as np
 import pandas as pd
-import pendulum
-from more_itertools import one
+from utils.general_constants import *
 from analysis.analysis_constants import *
 from analysis.analysis_results import LearningResults
 
 
 def load_sessions() -> pd.DataFrame:
-    local_dir_data = local_analysis_directory(AnalysisConstants.local_dir)
+    local_dir_data = local_analysis_directory(GeneralConstants.local_dir)
     df = pd.read_excel(sessions_path(local_dir_data), header=[0, 1], index_col=0)
     df.index = df.index.astype(str)
     return df
@@ -50,3 +36,7 @@ class SessionLoader(object):
 
     def learning(self) -> LearningResults:
         return LearningResults(session_name=self.session_date)
+
+    def results_online(self) -> dict:
+        self.array_hits = data_session['selfHits']
+

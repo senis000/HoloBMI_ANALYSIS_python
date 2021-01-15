@@ -1,9 +1,6 @@
 # dataclass for analysis
 
-import numpy as np
-from pathlib import Path
-from dataclasses import dataclass
-from analysis.analysis_constants import *
+from utils.general_constants import *
 
 
 def create_dirs():
