@@ -5,9 +5,9 @@ from typing import Tuple
 import itertools
 
 
-def time_to_hit(data: dict) -> Tuple[np.array, np.array]:
+def time_to_hit(data_session: dict) -> Tuple[np.array, np.array]:
     """ returns time between hits """
-    self_hits = data['selfHits']
+    self_hits = data_session['selfHits']
     tth = list((sum(1 for _ in group) for value, group in itertools.groupby(self_hits) if value == 0))
     tth = np.asarray(tth)
     tth_array = np.zeros(self_hits.shape[0])

@@ -4,19 +4,38 @@ from pathlib import Path
 from dataclasses import dataclass
 
 
-def local_directory(aux_dir: Path, session_name: str) -> Path:
-    return aux_dir / session_name
+def local_analysis_directory(aux_dir: Path) -> Path:
+    return aux_dir / 'Analysis'
+
+
+def cured_data_directory(aux_dir: Path) -> Path:
+    return aux_dir / 'cured_data'
+
+
+def sessions_path(aux_dir: Path) -> Path:
+    return aux_dir / 'sessions.xlsx'
+
+
+def obtain_session_name(session_date: str, mice_name: str) -> str:
+    return mice_name + '_' + session_date
+
+
+def plots_directory(aux_dir: Path) -> Path:
+    return aux_dir / 'plots'
 
 
 def learning_directory(aux_dir: Path) -> Path:
-    return aux_dir / "learning"
+    return aux_dir / 'learning'
 
 
-def analysis_configuration_file(session_name: str) -> str:
-    return f'{session_name}_analysis_configuration.pkl'
+def learning_file_name(session_name: str) -> str:
+    return f'{session_name}_learning_stats.parquet'
+
+
+
 
 
 @dataclass
 class AnalysisConstants:
     """  Class containing various constants for analysis, such as str for filenames """
-    var_error = 'error'
+    local_dir = Path("C:/Users/Nuria/Documents/DATA/holoBMI/")  # None
