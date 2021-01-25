@@ -7,9 +7,11 @@
 import os
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from matplotlib import interactive
 from utils.general_constants import *
 from analysis.analysis_constants import *
+from utils.loader import load_sessions_filename
 
 interactive(True)
-df = session_dataframe()
+df = load_sessions_filename()

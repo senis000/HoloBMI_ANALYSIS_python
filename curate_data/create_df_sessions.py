@@ -3,10 +3,11 @@
 import numpy as np
 import os
 import pandas as pd
+from pathlib import Path
 from utils.general_constants import *
 
 
-def find_files(df: pd.DataFrame) -> np.array:
+def find_files(df: pd.DataFrame) -> pd.DataFrame:
     """ Function to return the number of files corresponding to that name"""
     animals = np.unique(df.columns.get_level_values(0))[1:]
     for animal in animals:
@@ -59,3 +60,43 @@ def find_files(df: pd.DataFrame) -> np.array:
                     df.loc[date, (animal, 'file_holostim')] = holostim_files[0]
                 else:
                     print('Holo: ' + animal + ' ' + date + ' ' + str(len(holostim_files)))
+
+    # from looking at the files and checking with the mice_log and the .m files of each session
+    df.loc['191007', ('NVI12', 'file_pretraining')] = 'BMI_online191007T145608.mat'
+    df.loc['191007', ('NVI12', 'file_training')] = 'BMI_merged.mat'
+    df.loc['191009', ('NVI12', 'file_pretraining')] = 'BMI_online191009T144910.mat'
+    df.loc['191009', ('NVI12', 'file_training')] = 'BMI_online191009T153223.mat'
+    df.loc['191025', ('NVI12', 'file_pretraining')] = 'BMI_merged.mat'
+    df.loc['191025', ('NVI12', 'file_training')] = 'BMI_online191025T154101.mat'
+    df.loc['191003', ('NVI13', 'file_pretraining')] = 'BMI_online191003T171028.mat'
+    df.loc['191003', ('NVI13', 'file_training')] = 'BMI_online191003T175350.mat'
+    df.loc['191001', ('NVI16', 'file_pretraining')] = 'BMI_online191001T195536.mat'
+    df.loc['191001', ('NVI16', 'file_training')] = 'BMI_online191001T203900.mat'
+    df.loc['191004', ('NVI16', 'file_pretraining')] = 'BMI_online191004T203809.mat'
+    df.loc['191004', ('NVI16', 'file_training')] = 'BMI_online191004T212633.mat'
+    df.loc['191005', ('NVI16', 'file_pretraining')] = 'BMI_online191005T204800.mat'
+    df.loc['191005', ('NVI16', 'file_training')] = 'BMI_online191005T213208.mat'
+    df.loc['191011', ('NVI16', 'file_pretraining')] = 'BMI_online191011T201508.mat'
+    df.loc['191011', ('NVI16', 'file_training')] = 'BMI_online191011T205824.mat'
+    df.loc['191025', ('NVI16', 'file_pretraining')] = 'BMI_merged.mat'
+    df.loc['191025', ('NVI16', 'file_training')] = 'BMI_online191025T214847.mat'
+    df.loc['191026', ('NVI16', 'file_pretraining')] = 'BMI_merged.mat'
+    df.loc['191026', ('NVI16', 'file_training')] = 'BMI_online191026T213341.mat'
+    df.loc['191028', ('NVI16', 'file_pretraining')] = 'BMI_online191028T204050.mat'
+    df.loc['191028', ('NVI16', 'file_training')] = 'BMI_online191028T212555.mat'
+    df.loc['191031', ('NVI16', 'file_pretraining')] = 'BMI_merged_pre.mat'
+    df.loc['191031', ('NVI16', 'file_training')] = 'BMI_merged_bmi.mat'
+    df.loc['191106', ('NVI17', 'file_pretraining')] = 'BMI_online191106T224336.mat'
+    df.loc['191106', ('NVI17', 'file_training')] = 'BMI_online191106T232637.mat'
+    df.loc['191212', ('NVI17', 'file_training')] = 'BMI_online191212T192539.mat'
+    df.loc['191212', ('NVI20', 'file_training')] = 'BMI_online191212T225302.mat'
+    df.loc['191212', ('NVI22', 'file_training')] = 'BMI_online191213T003135.mat'
+    df.loc['191214', ('NVI17', 'file_training')] = 'BMI_online191214T175324.mat'
+    df.loc['191214', ('NVI20', 'file_training')] = 'BMI_online191214T225319.mat'
+    df.loc['191214', ('NVI22', 'file_training')] = 'BMI_online191214T200413.mat'
+    df.loc['191214', ('NVI22', 'file_baseline')] = 'BaselineOnline191214T185954.mat'
+    df.loc['191214', ('NVI20', 'file_pretraining')] = np.nan
+    df = df.sort_index(axis=1)
+    df.to_parquet(Path(curated_data_directory()) / 'session_filenames.parquet')
+    df.to_csv(Path(curated_data_directory()) / 'session_filenames.csv')
+    return df
