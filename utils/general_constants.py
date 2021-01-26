@@ -34,3 +34,4 @@ def files_directory(date: str, day: str, mice_name: str) -> Path:
 class GeneralConstants:
     """  Class containing various constants for analysis, such as str for filenames """
     local_dir = Path("C:/Users/Nuria/Documents/DATA/holoBMI/")  # None
+    frame_rate = 30

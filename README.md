@@ -5,8 +5,9 @@
 
 ### Starting with the data
 Ideally the data would be store remote so the paths to access it would be the same for 
-everyone, but this is not the case.
-So we need to change in utils/general_constants the local dir
+everyone, but this is not the case. In a perfect world (remote_storage) we would never touched
+general_constants, alas....
+we need to change in utils/general_constants the local dir
 
 `local_dir = Path("C:/your_local_dir_where_data_is_stored/") `
 
@@ -32,7 +33,7 @@ The loader helps to retrieve information from each session by indicating date an
 ```   
 from utils.loader import SessionLoader 
 session_date = '191007' 
-mice_name = 'NVI17'
+mice_name = 'NVI12'
 loader = SessionLoader(session_date, mice_name)
 ```
 
@@ -50,9 +51,9 @@ From loader you can retrieve:
 # loader.results_target_info_dict() --> numpy dictionary with the mat file variables.
 #    (similar for baseline, training, pretraining, target_calibration, and holostim)
 
->> training_dict = loader.results_training_dict()
+>> training_dict = loader.experiment_variables.dict_training() 
 >> training_dict['data']['selfHits']
->> array([0., 0., 0., ..., 0., 0., 0.], dtype=float32)
+  array([0., 0., 0., ..., 0., 0., 0.], dtype=float32)
 ```
 
 

@@ -1,7 +1,6 @@
 # class where to store/retrieve all the analysis results
 
 import pandas as pd
-from utils.general_constants import *
 from analysis.analysis_constants import *
 
 
@@ -14,3 +13,6 @@ class LearningResults:
     def learning_behavior(self) -> pd.DataFrame:
         filename = learning_directory('') / learning_file_name(self._session_name)
         return pd.read_parquet(self._filename_mapper(filename))
+
+
+

@@ -1,6 +1,7 @@
 # dataclass for analysis
 
 from utils.general_constants import *
+from analysis.analysis_constants import local_analysis_directory, learning_directory, plots_directory
 
 
 def create_dirs():
@@ -18,7 +19,6 @@ def create_dirs():
             local_dir_plots.mkdir()
 
 
-
 @dataclass
 class AnalysisConfiguration:
     """
@@ -26,8 +26,14 @@ class AnalysisConfiguration:
     provided.
     """
 
+    # dir for plots and analysis
+    local_dir = Path(GeneralConstants.local_dir)  # we store in the same folder analysis and plots
+
     # general
     tol = 0.05  # tolerance at which the pvalues will be consider significant
 
     # plotting
     to_plot: bool = True
+
+    # learning
+    sliding_window: int = 5

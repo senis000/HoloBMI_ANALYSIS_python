@@ -5,6 +5,13 @@ import numpy as np
 from scipy.io import loadmat
 from typing import Union, Optional
 
+from utils.general_constants import *
+
+
+def load_dict(session_date: str, day: str, mice_name: str, file_name: str) -> dict:
+    return from_matlab_file_to_dict(
+        files_directory(session_date, day, mice_name) / file_name)
+
 
 def from_matlab_file_to_dict(filename: Path) -> dict:
     """ takes a filename path and returns a numpy workable dictionary containing the variables """
@@ -19,7 +26,6 @@ def from_mat_dict(mat: dict, keys: Optional[str] = None) -> dict:
     if keys is None:
         keys = mat.keys()
     for key in keys:
-        print(key)
         if type(mat[key]) == np.ndarray:
             if len(mat[key]) > 0:
                 key_variables = mat[key].dtype.names
@@ -61,7 +67,3 @@ def _mat_with_labels(key_variables: tuple, in_dict: dict) -> dict:
             for key_var in updated_key_variables:
                 dict_key[aux_label][key_var] = np.squeeze(in_dict[key_var][0][ll])
     return dict_key
-
-
-
-
