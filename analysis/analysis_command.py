@@ -36,4 +36,5 @@ class AnalysisConfiguration:
     to_plot: bool = True
 
     # learning
-    sliding_window: int = 5
+    bin_size_learning = 1  # size of the temporal bins to calculate hpm and tth_pm
+    sliding_window: int = 5  # sliding window for the hpm learning plots

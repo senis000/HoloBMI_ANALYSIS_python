@@ -81,14 +81,10 @@ class SessionLoader(object):
                 self.day = aux_day[aux_day.notna()].values[0]
                 self.experiment_variables = \
                     ExperimentVariables(self._df_sessions, self.session_date, self.mice_name, self.day)
+                self.learning = LearningResults(session_name=self.session_name)
             else:
                 raise ValueError('The date is not correct')
         else:
             raise ValueError('That name is not in our database')
-
-    def learning(self) -> LearningResults:
-        return LearningResults(session_name=self.session_date)
-
-    # All the mat variables
 
 
