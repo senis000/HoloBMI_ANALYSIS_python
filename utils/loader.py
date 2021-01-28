@@ -54,6 +54,10 @@ class ExperimentVariables:
     def dict_target_info(self) -> dict:
         return load_dict(self._session_date, self._day, self._mice_name, self.file_names.file_target_info)
 
+    def dict_task_settings(self) -> dict:
+        workspace = load_dict(self._session_date, self._day, self._mice_name, 'workspace.mat')
+        return workspace['task_settings']
+
     def array_hits(self) -> np.array:
         training_dict = self.dict_training()
         array_hits = training_dict['data']['selfHits']

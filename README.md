@@ -47,7 +47,7 @@ From loader you can retrieve:
 # loader.training --> type of training experiment
 # loader.mice_name, loader.session_date --> input values
 # loader.session_name --> combination of session and mice_name for storage of analysis
-# loader.learning() --> learning results
+# loader.learning --> learning results
 # loader.results_target_info_dict() --> numpy dictionary with the mat file variables.
 #    (similar for baseline, training, pretraining, target_calibration, and holostim)
 
