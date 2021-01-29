@@ -1,9 +1,10 @@
 # to load all results of one session
-
 import pandas as pd
 import numpy as np
-from utils.general_constants import *
-from analysis.analysis_constants import *
+from typing import Tuple
+
+from utils.general_constants import sessions_path, sessions_filenames, obtain_session_name, occupancy_path, \
+    occupancy_t2_path, hits_t2_path, hits_path, occupancy_baseline_path, occupancy_baseline_t2_path
 from analysis.analysis_results import LearningResults
 from utils.utils_loader import load_dict
 
@@ -17,6 +18,29 @@ def load_sessions() -> pd.DataFrame:
 def load_sessions_filename() -> pd.DataFrame:
     df = pd.read_parquet(sessions_filenames())
     return df
+
+
+def load_occupancy() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    df = pd.read_parquet(occupancy_path())
+    df_2 = pd.read_parquet(occupancy_t2_path())
+    df_b = pd.read_parquet(occupancy_baseline_path())
+    df_b2 = pd.read_parquet(occupancy_baseline_t2_path())
+    return df, df_2, df_b, df_b2
+
+
+def load_hits() -> Tuple[pd.DataFrame, pd.DataFrame]:
+    df = pd.read_parquet(hits_path())
+    df_2 = pd.read_parquet(hits_t2_path())
+    return df, df_2
+
+
+def load_names_dates() -> Tuple[pd.core.indexes.base.Index, pd.core.indexes.base.Index, np.array]:
+    df_sessions = load_sessions_filename()
+    dates = df_sessions.index
+    mice_names = df_sessions.columns.levels[0][1:]
+    type_pre_trainings = np.unique(np.concatenate(df_sessions.loc[slice(None), (slice(None), '1_exp')].values).astype(str))
+    type_pre_trainings = type_pre_trainings[type_pre_trainings != 'None']
+    return mice_names, dates, type_pre_trainings
 
 
 class FileNames:
@@ -63,7 +87,7 @@ class ExperimentVariables:
         array_hits = training_dict['data']['selfHits']
         last_frame = training_dict['data']['frame']
         array_hits = array_hits[:last_frame - 1]
-        return array_hits
+        return array_hits.astype(int)
 
 
 class SessionLoader(object):

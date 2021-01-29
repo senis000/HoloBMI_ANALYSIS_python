@@ -8,7 +8,7 @@ from utils.general_constants import *
 
 
 def find_files(df: pd.DataFrame) -> pd.DataFrame:
-    """ Function to return the number of files corresponding to that name"""
+    """ Function to return the number and name of files corresponding to that name"""
     animals = np.unique(df.columns.get_level_values(0))[1:]
     for animal in animals:
         df[animal, 'n_baseline'] = np.nan
@@ -61,6 +61,7 @@ def find_files(df: pd.DataFrame) -> pd.DataFrame:
                 else:
                     print('Holo: ' + animal + ' ' + date + ' ' + str(len(holostim_files)))
 
+    # for the sessions/files with more than one valid option. Checked manually
     # from looking at the files and checking with the mice_log and the .m files of each session
     df.loc['191007', ('NVI12', 'file_pretraining')] = 'BMI_online191007T145608.mat'
     df.loc['191007', ('NVI12', 'file_training')] = 'BMI_merged.mat'
@@ -86,8 +87,10 @@ def find_files(df: pd.DataFrame) -> pd.DataFrame:
     df.loc['191028', ('NVI16', 'file_training')] = 'BMI_online191028T212555.mat'
     df.loc['191031', ('NVI16', 'file_pretraining')] = 'BMI_merged_pre.mat'
     df.loc['191031', ('NVI16', 'file_training')] = 'BMI_merged_bmi.mat'
+    df.loc['191104', ('NVI13', 'file_baseline')] = 'BaselineOnline191104T165948.mat'
     df.loc['191106', ('NVI17', 'file_pretraining')] = 'BMI_online191106T224336.mat'
     df.loc['191106', ('NVI17', 'file_training')] = 'BMI_online191106T232637.mat'
+    df.loc['191106', ('NVI22', 'file_baseline')] = 'BaselineOnline191106T142147.mat'
     df.loc['191212', ('NVI17', 'file_training')] = 'BMI_online191212T192539.mat'
     df.loc['191212', ('NVI20', 'file_training')] = 'BMI_online191212T225302.mat'
     df.loc['191212', ('NVI22', 'file_training')] = 'BMI_online191213T003135.mat'

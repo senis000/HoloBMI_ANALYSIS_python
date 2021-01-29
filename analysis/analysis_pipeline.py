@@ -60,6 +60,7 @@ def learning_wrap(loader: SessionLoader):
     s_curve['tth'] = tth
     s_curve['tth_pm'] = tth_pm
     s_curve['hpm'] = hpm
+    s_curve['bins_min'] = bins_min
     df_curve = pd.DataFrame(s_curve).transpose()
     df_curve.to_parquet(path_learning_curve_file_name(loader.session_name, GeneralConstants.local_dir))
 
@@ -72,8 +73,6 @@ def learning_wrap(loader: SessionLoader):
         plot_tth(tth_pm/frame_rate, bins_min/frame_rate/60, learning_dir_plots,  loader.session_name)
         plot_hpm(hpm, bins_min/frame_rate/60, AnalysisConfiguration.sliding_window, learning_dir_plots,
                  loader.session_name)
-
-    return df_stats
 
 
 def learning_features(loader: SessionLoader):

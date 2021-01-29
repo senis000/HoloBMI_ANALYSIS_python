@@ -16,6 +16,30 @@ def sessions_filenames() -> Path:
     return curated_data_directory() / 'session_filenames.parquet'
 
 
+def occupancy_path() -> Path:
+    return curated_data_directory() / 'cursor_occupancy.parquet'
+
+
+def occupancy_t2_path() -> Path:
+    return curated_data_directory() / 'cursor_occupancy_t2.parquet'
+
+
+def occupancy_baseline_path() -> Path:
+    return curated_data_directory() / 'cursor_occupancy_baseline_.parquet'
+
+
+def occupancy_baseline_t2_path() -> Path:
+    return curated_data_directory() / 'cursor_occupancy_t2_baseline_.parquet'
+
+
+def hits_path() -> Path:
+    return curated_data_directory() / 'hits.parquet'
+
+
+def hits_t2_path() -> Path:
+    return curated_data_directory() / 'hits_t2.parquet'
+
+
 def raw_data_directory() -> Path:
     return GeneralConstants.local_dir / 'raw_data'
 
