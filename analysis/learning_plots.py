@@ -2,6 +2,7 @@
 
 import numpy as np
 import utils.utils_plots as ut_plots
+import seaborn as sns
 from pathlib import Path
 from utils.utils_math import sliding_mean
 
@@ -9,7 +10,7 @@ from utils.utils_math import sliding_mean
 def plot_tth(tth_pm_sec: np.array, temp_array: np.array, folder_path: Path, session_name: str):
     """ function to plot time to hit """
     fig1, ax1 = ut_plots.open_plot()
-    ax1.plot(temp_array[1:], tth_pm_sec, '*')
+    sns.regplot(x=temp_array[1:], y=tth_pm_sec, ax=ax1)
     ax1.set_xlim([temp_array[0], temp_array[-1]])
     ax1.set_xlabel('Time elapsed (min)')
     ax1.set_ylabel('Time to hit (sec)')

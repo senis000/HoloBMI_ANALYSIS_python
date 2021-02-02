@@ -36,5 +36,7 @@ class AnalysisConfiguration:
     to_plot: bool = True
 
     # learning
-    bin_size_learning = 1  # size of the temporal bins to calculate hpm and tth_pm
+    bin_size_learning = 1  # size of the temporal bins (min) to calculate hpm and tth_pm
+    length_bin_array = 60  # minutes to consider for the bins_min array
     sliding_window: int = 5  # sliding window for the hpm learning plots
+

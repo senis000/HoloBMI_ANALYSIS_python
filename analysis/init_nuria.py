@@ -7,6 +7,7 @@
 import os
 import pandas as pd
 import numpy as np
+import warnings
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 from matplotlib import interactive
@@ -20,6 +21,7 @@ from analysis.analysis_command import AnalysisConfiguration
 from analysis.run_at_night import run_at_night
 
 interactive(True)
+warnings.filterwarnings("ignore", message="The PostScript backend does not support transparency")
 df = load_sessions_filename()
 session_date = '191124'
 mice_name = 'NVI17'

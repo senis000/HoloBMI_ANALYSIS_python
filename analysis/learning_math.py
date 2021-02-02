@@ -37,15 +37,15 @@ def relative_number_hits(number_hits_calibration: int, number_frames_baseline: i
     s['learning_index_calibration'] = (np.nansum(array_hits) - expected_hits_calibration) / np.nansum(array_hits)
     baseline_hits_5min = np.nansum(array_hits[:frame_rate*5*60])
     expected_baseline_hits_5min = array_hits.shape[0]/(frame_rate*5*60)*baseline_hits_5min
-    s['increase_5min'] = (np.nansum(array_hits) - baseline_hits_5min) / baseline_hits_5min
+    s['increase_5min'] = (np.nansum(array_hits) - expected_baseline_hits_5min) / expected_baseline_hits_5min
     s['learning_index_5min'] = (np.nansum(array_hits) - expected_baseline_hits_5min) / np.nansum(array_hits)
     baseline_hits_10min = np.nansum(array_hits[:frame_rate * 10 * 60])
     expected_baseline_hits_10min = array_hits.shape[0] / (frame_rate * 10 * 60) * baseline_hits_10min
-    s['increase_10min'] = (np.nansum(array_hits) - baseline_hits_10min) / baseline_hits_10min
+    s['increase_10min'] = (np.nansum(array_hits) - expected_baseline_hits_10min) / expected_baseline_hits_10min
     s['learning_index_10min'] = (np.nansum(array_hits) - expected_baseline_hits_10min) / np.nansum(array_hits)
     baseline_hits_15min = np.nansum(array_hits[:frame_rate * 15 * 60])
     expected_baseline_hits_15min = array_hits.shape[0] / (frame_rate * 15 * 60) * baseline_hits_15min
-    s['increase_15min'] = (np.nansum(array_hits) - baseline_hits_15min) / baseline_hits_15min
+    s['increase_15min'] = (np.nansum(array_hits) - expected_baseline_hits_15min) / expected_baseline_hits_15min
     s['learning_index_15min'] = (np.nansum(array_hits) - expected_baseline_hits_15min) / np.nansum(array_hits)
     return s
 
