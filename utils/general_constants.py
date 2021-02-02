@@ -25,11 +25,11 @@ def occupancy_t2_path() -> Path:
 
 
 def occupancy_baseline_path() -> Path:
-    return curated_data_directory() / 'cursor_occupancy_baseline_.parquet'
+    return curated_data_directory() / 'cursor_occupancy_baseline.parquet'
 
 
 def occupancy_baseline_t2_path() -> Path:
-    return curated_data_directory() / 'cursor_occupancy_t2_baseline_.parquet'
+    return curated_data_directory() / 'cursor_occupancy_t2_baseline.parquet'
 
 
 def hits_path() -> Path:

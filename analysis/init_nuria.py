@@ -17,6 +17,7 @@ from analysis.analysis_constants import *
 from utils.loader import load_sessions_filename
 from utils.loader import SessionLoader
 from analysis.analysis_command import AnalysisConfiguration
+from analysis.run_at_night import run_at_night
 
 interactive(True)
 df = load_sessions_filename()

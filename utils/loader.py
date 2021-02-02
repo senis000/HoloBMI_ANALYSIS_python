@@ -22,25 +22,39 @@ def load_sessions_filename() -> pd.DataFrame:
 
 def load_occupancy() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     df = pd.read_parquet(occupancy_path())
+    df = df.set_index('rows')
+    df.index = df.index.astype(str)
     df_2 = pd.read_parquet(occupancy_t2_path())
+    df_2 = df_2.set_index('rows')
+    df_2.index = df_2.index.astype(str)
     df_b = pd.read_parquet(occupancy_baseline_path())
+    df_b = df_b.set_index('rows')
+    df_b.index = df_b.index.astype(str)
     df_b2 = pd.read_parquet(occupancy_baseline_t2_path())
+    df_b2 = df_b2.set_index('rows')
+    df_b2.index = df_b2.index.astype(str)
     return df, df_2, df_b, df_b2
 
 
 def load_hits() -> Tuple[pd.DataFrame, pd.DataFrame]:
     df = pd.read_parquet(hits_path())
+    df = df.set_index('rows')
+    df.index = df.index.astype(str)
     df_2 = pd.read_parquet(hits_t2_path())
+    df_2 = df_2.set_index('rows')
+    df_2.index = df_2.index.astype(str)
     return df, df_2
 
 
-def load_names_dates() -> Tuple[pd.core.indexes.base.Index, pd.core.indexes.base.Index, np.array]:
+def load_names_dates() -> Tuple[pd.core.indexes.base.Index, pd.core.indexes.base.Index, np.array, np.array]:
     df_sessions = load_sessions_filename()
     dates = df_sessions.index
     mice_names = df_sessions.columns.levels[0][1:]
     type_pre_trainings = np.unique(np.concatenate(df_sessions.loc[slice(None), (slice(None), '1_exp')].values).astype(str))
     type_pre_trainings = type_pre_trainings[type_pre_trainings != 'None']
-    return mice_names, dates, type_pre_trainings
+    type_trainings = np.unique(np.concatenate(df_sessions.loc[slice(None), (slice(None), '2_exp')].values).astype(str))
+    type_trainings = type_trainings[type_trainings != 'None']
+    return mice_names, dates, type_pre_trainings, type_trainings
 
 
 class FileNames:
@@ -109,7 +123,10 @@ class SessionLoader(object):
                 self.day = aux_day[aux_day.notna()].values[0]
                 self.experiment_variables = \
                     ExperimentVariables(self._df_sessions, self.session_date, self.mice_name, self.day)
-                self.learning = LearningResults(session_name=self.session_name)
+                try:
+                    self.learning = LearningResults(session_name=self.session_name)
+                except FileNotFoundError:
+                    self.learning = 'no learning analyzed yet'
             else:
                 raise ValueError('The date is not correct')
         else:

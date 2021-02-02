@@ -1,4 +1,3 @@
-
 import os
 import posixpath
 import tempfile
@@ -21,49 +20,60 @@ from utils.general_constants import GeneralConstants, obtain_session_name
 from utils.loader import SessionLoader
 
 from analysis.analysis_constants import learning_directory, plots_directory, path_learning_stats_file_name, \
-    path_learning_curve_file_name
+    path_learning_curve_file_name, learning_occupancy_path, learning_stats_path, learning_curves_path
 from analysis.analysis_command import AnalysisConfiguration
 from utils.loader import load_sessions_filename, load_occupancy, load_names_dates, load_hits
 
 
 def population_occupancy():
+    """ function to put together all the results of occupancy of each mice """
     df_sessions = load_sessions_filename()
     df_occupancy, df_occupancy_t2, df_base_occupancy, df_base_occupancy_t2 = load_occupancy()
     df_hits, df_hits_t2 = load_hits()
-    mice_names, dates, type_pre_trainings = load_names_dates()
-    df_index_occupancy = (df_occupancy - df_occupancy_t2)/df_occupancy
-    df_index_occupancy_relative_baseline = (df_occupancy - df_base_occupancy)/df_occupancy
+    mice_names, dates, type_pre_trainings, type_trainings = load_names_dates()
+    df_index_occupancy = (df_occupancy - df_occupancy_t2) / df_occupancy
+    df_index_occupancy_relative_baseline = (df_occupancy - df_base_occupancy) / df_occupancy
     df_index_occupancy_relative_baseline_and_t2 = df_index_occupancy_relative_baseline / \
-                                                   ((df_occupancy_t2 - df_base_occupancy_t2) / df_occupancy_t2)
+                                                  ((df_occupancy_t2 - df_base_occupancy_t2) / df_occupancy_t2)
     df_index_hits = (df_hits - df_hits_t2) / df_hits
-    occupancy_columns = ['Occupancy_t2_index', 'Occupancy_base_index', 'Occupancy_base_t2_index']
+    occupancy_columns = ['Occupancy_t2_index', 'Occupancy_base_index', 'Occupancy_base_t2_index', 'hits_index']
     multiindex_occupancy = pd.MultiIndex.from_product((type_pre_trainings, occupancy_columns))
-    df_learning_occupancy = pd.DataFrame(index=mice_names, columns=multiindex_occupancy)
-    for mice_name in mice_names:
-        for date in dates:
-            pre_training = df_sessions.loc[date, (mice_name, '1_exp')]
-            if pre_training is not None:
-                if np.nansum(df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_t2_index')]) == 0:
-                    df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_t2_index')] =\
-                        [df_index_occupancy.loc[date, mice_name]]
-                else:
-                    df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_t2_index')].append(
-                        df_index_occupancy.loc[date, mice_name])
-                if np.nansum(df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_index')]) == 0:
-                    df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_index')] =\
-                        [df_index_occupancy_relative_baseline.loc[date, mice_name]]
-                else:
-                    df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_index')].append(
-                        df_index_occupancy_relative_baseline.loc[date, mice_name])
-                if np.nansum(df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_t2_index')]) == 0:
-                    df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_t2_index')] =\
-                        [df_index_occupancy_relative_baseline_and_t2.loc[date, mice_name]]
-                else:
-                    df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_t2_index')].append(
-                        df_index_occupancy_relative_baseline_and_t2.loc[date, mice_name])
+    for training in type_trainings:
+        df_learning_occupancy = pd.DataFrame(index=mice_names, columns=multiindex_occupancy)
+        for mice_name in mice_names:
+            for date in dates:
+                pre_training = df_sessions.loc[date, (mice_name, '1_exp')]
+                if pre_training is not None and df_sessions.loc[date, (mice_name, '2_exp')] in [training, None]:
+                    if np.nansum(df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_t2_index')]) == 0:
+                        df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_t2_index')] = \
+                            [df_index_occupancy.loc[date, mice_name]]
+                    else:
+                        df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_t2_index')].append(
+                            df_index_occupancy.loc[date, mice_name])
+                    if np.nansum(df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_index')]) == 0:
+                        df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_index')] = \
+                            [df_index_occupancy_relative_baseline.loc[date, mice_name]]
+                    else:
+                        df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_index')].append(
+                            df_index_occupancy_relative_baseline.loc[date, mice_name])
+                    if np.nansum(df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_t2_index')]) == 0:
+                        df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_t2_index')] = \
+                            [df_index_occupancy_relative_baseline_and_t2.loc[date, mice_name]]
+                    else:
+                        df_learning_occupancy.loc[mice_name, (pre_training, 'Occupancy_base_t2_index')].append(
+                            df_index_occupancy_relative_baseline_and_t2.loc[date, mice_name])
+
+                    if np.nansum(df_learning_occupancy.loc[mice_name, (pre_training, 'hits_index')]) == 0:
+                        df_learning_occupancy.loc[mice_name, (pre_training, 'hits_index')] = \
+                            [df_index_hits.loc[date, mice_name]]
+                    else:
+                        df_learning_occupancy.loc[mice_name, (pre_training, 'hits_index')].append(
+                            df_index_hits.loc[date, mice_name])
+        df_learning_occupancy.to_parquet(learning_occupancy_path(AnalysisConfiguration.local_dir, training))
 
 
 def population_learning():
+    """ function to put together the stats and curves results of each mice """
     df_sessions = load_sessions_filename()
     mice_names, dates, type_pre_trainings = load_names_dates()
     create_df = True
@@ -96,11 +106,5 @@ def population_learning():
                     except AttributeError:
                         df_learning_curve.loc[mice_name, (pre_training, slice(None))] = df_curve.values
                         break
-
-
-
-
-
-
-
-
+    df_learning_stats.to_parquet(learning_stats_path(AnalysisConfiguration.local_dir))
+    df_learning_curve.to_parquet(learning_curves_path(AnalysisConfiguration.local_dir))

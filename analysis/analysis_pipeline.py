@@ -51,7 +51,7 @@ def learning_wrap(loader: SessionLoader):
     s_stats = relative_number_hits(number_hits_calibration, number_frames_baseline, array_hits, frame_rate)
 
     df_stats = pd.DataFrame(s_stats).transpose()
-    df_stats.to_parquet(path_learning_stats_file_name(loader.session_name, GeneralConstants.local_dir))
+    df_stats.to_parquet(path_learning_stats_file_name(loader.session_name, AnalysisConfiguration.local_dir))
 
     # obtaining the learning curves
     tth, tth_pm = time_to_hit(array_hits, bins_min)
@@ -62,7 +62,7 @@ def learning_wrap(loader: SessionLoader):
     s_curve['hpm'] = hpm
     s_curve['bins_min'] = bins_min
     df_curve = pd.DataFrame(s_curve).transpose()
-    df_curve.to_parquet(path_learning_curve_file_name(loader.session_name, GeneralConstants.local_dir))
+    df_curve.to_parquet(path_learning_curve_file_name(loader.session_name, AnalysisConfiguration.local_dir))
 
     # plot if required
     if AnalysisConfiguration.to_plot:

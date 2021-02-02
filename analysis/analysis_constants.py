@@ -11,6 +11,10 @@ def plots_directory(aux_dir: Path) -> Path:
     return Path(aux_dir) / 'plots'
 
 
+def population_directory(aux_dir: Path) -> Path:
+    return Path(aux_dir) / 'population'
+
+
 def learning_directory(aux_dir: Path) -> Path:
     return Path(aux_dir) / 'learning'
 
@@ -31,3 +35,16 @@ def learning_curve_file_name(session_name: str) -> str:
 def path_learning_curve_file_name(session_name: str, aux_dir: Path) -> Path:
     filename = learning_curve_file_name(session_name)
     return Path(learning_directory(local_analysis_directory(aux_dir))) / filename
+
+
+def learning_occupancy_path(aux_dir, n_exp) -> Path:
+    filename = 'learning_occupancy_' + n_exp + '.parquet'
+    return learning_directory(local_analysis_directory(aux_dir)) / filename
+
+
+def learning_stats_path(aux_dir) -> Path:
+    return learning_directory(local_analysis_directory(aux_dir)) / 'learning_stats.parquet'
+
+
+def learning_curves_path(aux_dir) -> Path:
+    return learning_directory(local_analysis_directory(aux_dir)) / 'learning_curves.parquet'
