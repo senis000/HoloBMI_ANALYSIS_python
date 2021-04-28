@@ -44,6 +44,10 @@ def raw_data_directory() -> Path:
     return GeneralConstants.local_dir / 'raw_data'
 
 
+def caiman_directory() -> Path:
+    return GeneralConstants.local_dir / 'caiman_results'
+
+
 def obtain_session_name(session_date: str, mice_name: str) -> str:
     return mice_name + '_' + session_date
 

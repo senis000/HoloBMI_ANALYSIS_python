@@ -65,6 +65,7 @@ class FileNames:
         self.file_training = df_sessions.loc[session_date, (mice_name, 'file_training')]
         self.file_target_cal = df_sessions.loc[session_date, (mice_name, 'file_target_cal')]
         self.file_target_info = df_sessions.loc[session_date, (mice_name, 'file_target_info')]
+        self.file_strc_mask = 'strcMask.mat'
 
 
 class ExperimentVariables:
@@ -91,6 +92,9 @@ class ExperimentVariables:
 
     def dict_target_info(self) -> dict:
         return load_dict(self._session_date, self._day, self._mice_name, self.file_names.file_target_info)
+
+    def dict_strc_mask(self) -> dict:
+        return load_dict(self._session_date, self._day, self._mice_name, self.file_names.file_strc_mask)
 
     def dict_task_settings(self) -> dict:
         workspace = load_dict(self._session_date, self._day, self._mice_name, 'workspace.mat')

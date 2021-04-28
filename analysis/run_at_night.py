@@ -3,7 +3,6 @@ import posixpath
 import tempfile
 import pickle
 import datetime
-import pendulum
 import h5py
 import warnings
 import logging
