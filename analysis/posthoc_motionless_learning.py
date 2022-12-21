@@ -44,56 +44,56 @@ def open_caiman_files(loader: SessionLoader):
     finalneur, b_mod = detect_ensemble_neurons(dff, online_data, new_com, com_online, np.nansum(b, 0))
 
 
-def motion_reconstruction(loader: SessionLoader, dims: np.array):
-    """ function to reconstruct the video of motion correction given by caiman"""
-    # open the files
-    caiman_dir = caiman_full_directory(caiman_directory(), loader.mice_name, loader.session_date, loader.day)
-    raw_dir = raw_folder(raw_data_directory(), loader.mice_name, loader.session_date, loader.day)
-    motion_file = motion_file_path(caiman_analysis_results_directory(caiman_dir))
-    # files to motion_correct
-    list_raw_files = raw_files(raw_dir)
-    # motion correct shifts
-    motion_dict = pickle.load(open(motion_file, 'rb'))
-    motion_shift = motion_dict['rigid']
-    motion_corrected_video = np.full(([len(list_raw_files), dims[0], dims[1]]), -999, dtype=int)
-    for ind, file in enumerate(list_raw_files):
-        im = np.asarray(Image.open(raw_dir / file))
-        if motion_shift[ind][0] > 0:
-            x_im_min = 0
-            x_im_max = np.int(dims[0] - motion_shift[ind][0])
-            x_v_min = np.int(motion_shift[ind][0])
-            x_v_max = dims[0]
-        else:
-            x_im_min = np.int(motion_shift[ind][0])
-            x_im_max = dims[0]
-            x_v_min = 0
-            x_v_max = np.int(dims[0] + motion_shift[ind][0])
-        if motion_shift[ind][1] > 0:
-            y_im_min = 0
-            y_im_max = np.int(dims[1] - motion_shift[ind][1])
-            y_v_min = np.int(motion_shift[ind][1])
-            y_v_max = dims[1]
-        else:
-            y_im_min = np.int(motion_shift[ind][1])
-            y_im_max = dims[1]
-            y_v_min = 0
-            y_v_max = np.int(dims[1] + motion_shift[ind][1])
-        motion_corrected_video[ind, x_v_min:x_v_max, y_v_min:y_v_max] = im[x_im_min:x_im_max, y_im_min:y_im_max]
-
-
-
-
-
-
-def synchronize_frames(voltage_file: Path):
-    voltage_rec = pd.read_csv(voltage_file)
-    frames_bmi, _ = signal.find_peaks(voltage_rec[' Input 7'], 1, distance=20)
-    frames_prairie, _ = signal.find_peaks(voltage_rec[' Input 3'], 1, distance=10)
-    frames_im = frames_prairie[1::2]
-    sync_time = voltage_rec['Time(ms)']
-    indices_bmi = np.zeros(frames_bmi.shape, dtype=int)
-    for ind, frame in enumerate(frames_bmi):
-        indices_bmi[ind] = np.where(frames_im <= frame)[0][-1]
+# def motion_reconstruction(loader: SessionLoader, dims: np.array):
+#     """ function to reconstruct the video of motion correction given by caiman"""
+#     # open the files
+#     caiman_dir = caiman_full_directory(caiman_directory(), loader.mice_name, loader.session_date, loader.day)
+#     raw_dir = raw_folder(raw_data_directory(), loader.mice_name, loader.session_date, loader.day)
+#     motion_file = motion_file_path(caiman_analysis_results_directory(caiman_dir))
+#     # files to motion_correct
+#     list_raw_files = raw_files(raw_dir)
+#     # motion correct shifts
+#     motion_dict = pickle.load(open(motion_file, 'rb'))
+#     motion_shift = motion_dict['rigid']
+#     motion_corrected_video = np.full(([len(list_raw_files), dims[0], dims[1]]), -999, dtype=int)
+#     for ind, file in enumerate(list_raw_files):
+#         im = np.asarray(Image.open(raw_dir / file))
+#         if motion_shift[ind][0] > 0:
+#             x_im_min = 0
+#             x_im_max = np.int(dims[0] - motion_shift[ind][0])
+#             x_v_min = np.int(motion_shift[ind][0])
+#             x_v_max = dims[0]
+#         else:
+#             x_im_min = np.int(motion_shift[ind][0])
+#             x_im_max = dims[0]
+#             x_v_min = 0
+#             x_v_max = np.int(dims[0] + motion_shift[ind][0])
+#         if motion_shift[ind][1] > 0:
+#             y_im_min = 0
+#             y_im_max = np.int(dims[1] - motion_shift[ind][1])
+#             y_v_min = np.int(motion_shift[ind][1])
+#             y_v_max = dims[1]
+#         else:
+#             y_im_min = np.int(motion_shift[ind][1])
+#             y_im_max = dims[1]
+#             y_v_min = 0
+#             y_v_max = np.int(dims[1] + motion_shift[ind][1])
+#         motion_corrected_video[ind, x_v_min:x_v_max, y_v_min:y_v_max] = im[x_im_min:x_im_max, y_im_min:y_im_max]
+#
+#
+#
+#
+#
+#
+# def synchronize_frames(voltage_file: Path):
+#     voltage_rec = pd.read_csv(voltage_file)
+#     frames_bmi, _ = signal.find_peaks(voltage_rec[' Input 7'], 1, distance=20)
+#     frames_prairie, _ = signal.find_peaks(voltage_rec[' Input 3'], 1, distance=10)
+#     frames_im = frames_prairie[1::2]
+#     sync_time = voltage_rec['Time(ms)']
+#     indices_bmi = np.zeros(frames_bmi.shape, dtype=int)
+#     for ind, frame in enumerate(frames_bmi):
+#         indices_bmi[ind] = np.where(frames_im <= frame)[0][-1]
 
 
 def obtain_real_com(masks, thres=0.1):
